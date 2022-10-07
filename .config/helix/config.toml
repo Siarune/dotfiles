@@ -1,0 +1,20 @@
+theme = "catppuccin_mocha"
+
+[editor]
+shell = ["nu", "-c"]
+#color-modes = true
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+
+
+[editor.statusline]
+left = ["mode", "spinner", "file-name"]
+center = ["diagnostics"]
+right = ["file-type", "file-encoding", "position", "position-percentage"]
+
+#[editor.whitespace.render]
+#space = "all"
+#tab = "all"
+#newline = "none"

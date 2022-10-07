@@ -1,0 +1,31 @@
+{
+  "author":
+  [
+    "siarune"
+  ],
+  "checksum": "",
+  "installer": "",
+  "keywords":
+  [
+    "node",
+    "nvm",
+    "management",
+    "manager"
+  ],
+  "long-desc": "Nuvm is a nu port of nvm",
+  "name": "nuvm",
+  "nu-dependencies": [],
+  "os":
+  [
+    "android",
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "post-install-msg": "",
+  "pre-install-msg": "",
+  "raw-url": "https://raw.githubusercontent.com/skelly37/nupac/main/modules/nupac/nupac.nu",
+  "short-desc": "package manager for nushell",
+  "url": "https://github.com/skelly37/nupac/blob/main/modules/nupac/nupac.nu",
+  "version": "0.1.0"
+}
