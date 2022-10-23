@@ -1,21 +1,24 @@
 /**
- * @name DoubleClickToEdit
- * @author Farcrada
- * @version 9.3.4
+ * @name Double Click To Edit
+ * @author Farcrada, original idea by Jiiks
+ * @version 9.3.7
  * @description Double click a message you wrote to quickly edit it.
  * 
+ * @invite qH6UWCwfTu
  * @website https://github.com/Farcrada/DiscordPlugins/
  * @source https://github.com/Farcrada/DiscordPlugins/blob/master/Double-click-to-edit/DoubleClickToEdit.plugin.js
  * @updateUrl https://raw.githubusercontent.com/Farcrada/DiscordPlugins/master/Double-click-to-edit/DoubleClickToEdit.plugin.js
  */
 
+/** @type {typeof import("react")} */
+const React = BdApi.React;
 
 const config = {
 	info: {
 		name: "Double Click To Edit",
 		id: "DoubleClickToEdit",
 		description: "Double click a message you wrote to quickly edit it",
-		version: "9.3.4",
+		version: "9.3.7",
 		author: "Farcrada",
 		updateUrl: "https://raw.githubusercontent.com/Farcrada/DiscordPlugins/master/Double-click-to-edit/DoubleClickToEdit.plugin.js"
 	}
@@ -33,10 +36,6 @@ const blacklist = [
 
 module.exports = class DoubleClickToEdit {
 
-	//I like my spaces. 
-	getName() { return config.info.name; }
-	getAuthor() { return `${config.info.author}, original idea by Jiiks`; }
-
 
 	load() {
 		try { global.ZeresPluginLibrary.PluginUpdater.checkForUpdate(config.info.name, config.info.version, config.info.updateUrl); }
@@ -49,8 +48,11 @@ module.exports = class DoubleClickToEdit {
 			this.selectedClass = BdApi.findModuleByProps("message", "selected").selected;
 			this.messagesWrapper = BdApi.findModuleByProps("empty", "messagesWrapper").messagesWrapper;
 
+			//Copy to clipboard
+			this.copyToClipboard = BdApi.findModuleByProps("clipboard").clipboard.copy;
+
 			//Reply functions
-			this.replyToMessage = BdApi.findModuleByProps("replyToMessage").replyToMessage;
+			this.replyToMessage = BdApi.findModule(m => m.toString().includes("dispatchToLastSubscribed("));
 			this.getChannel = BdApi.findModuleByProps("getChannel", "getDMFromUserId").getChannel;
 
 			//Stores
@@ -58,7 +60,7 @@ module.exports = class DoubleClickToEdit {
 			this.CurrentUserStore = BdApi.findModuleByProps("getCurrentUser");
 
 			//Settings
-			this.SwitchItem = BdApi.findModuleByDisplayName("SwitchItem");
+			this.SwitchItem = BdApi.findModule(m => m.toString().includes("t=e.value,r=e.disabled"))
 
 			//Events
 			global.document.addEventListener('dblclick', this.doubleclickFunc);
@@ -87,29 +89,19 @@ module.exports = class DoubleClickToEdit {
 		//which also makes it an anonymous functional component;
 		//Pretty neat.
 		return () => {
-			//Since inherently when you toggle something you need to know what you're toggling from
-			//because of this instead of using useState you'd use useReducer
-			const [state, dispatch] = BdApi.React.useReducer(currentState => {
-				//This runs when you flick the switch
-				//Starting with reversing the current state:
-				const newState = !currentState;
+			const [state, setState] = React.useState(this.doubleClickToReplySetting);
 
-				//Saving the new state
-				this.doubleClickToReplySetting = newState;
-				BdApi.saveData(config.info.id, "doubleClickToReplySetting", newState);
-
-				//Returning the new state
-				return newState;
-
-				//Default value
-			}, this.doubleClickToReplySetting)
-
-			return BdApi.React.createElement(this.SwitchItem, {
+			return React.createElement(this.SwitchItem, {
 				//The state that is loaded with the default value
 				value: state,
 				note: "Enable to double click another's message and start replying.",
 				//Since onChange passes the current state we can simply invoke it as such
-				onChange: dispatch
+				onChange: (newState) => {
+					//Saving the new state
+					this.doubleClickToReplySetting = newState;
+					BdApi.saveData(config.info.id, "doubleClickToReplySetting", newState);
+					setState(newState);
+				}
 				//Discord Is One Of Those
 			}, "Enable Replying");
 		}
@@ -117,7 +109,7 @@ module.exports = class DoubleClickToEdit {
 
 	handler(e) {
 		//Check if we're not double clicking
-		if (typeof (e?.target?.className) !== typeof("") ||
+		if (typeof (e?.target?.className) !== typeof ("") ||
 			blacklist.some(nameOfClass => e?.target?.className?.indexOf?.(nameOfClass) > -1))
 			return;
 
@@ -137,6 +129,10 @@ module.exports = class DoubleClickToEdit {
 		if (!instance)
 			return;
 
+		//When selecting text it might be handy to have it auto-copy.
+		if (this.copyBeforeAction)
+			if (this.copyBeforeActionModifier)
+				this.copyToClipboard(document.getSelection().toString());
 
 		//The message instance is filled top to bottom, as it is in view.
 		//As a result, "baseMessage" will be the actual message you want to address. And "message" will be the reply.

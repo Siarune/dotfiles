@@ -1876,3 +1876,238 @@ ls
 git init
 git push --set-upstream srht master
 ls -a
+git push --set-upstream srht master
+npm install -g blitz@alpha
+zsh
+z Var
+blitz new auth
+cd auth
+blitz dev
+npm install -g blitz@beta
+zsh
+blitz new auth
+cd auth
+blitz dev
+yarn upgrade-interactive --latest
+blitz -v
+zsh
+c
+npm install --global blitz@beta
+blitz -v
+npm install blitz@beta --global
+^npm install blitz@beta --global
+^sudo npm install -g  blitz@beta
+blitz -v
+c
+z Var
+ls
+rm -rf auth
+ls
+blitz new authTest
+cd authTest && blitz dev
+z auth
+ls
+z authTest
+blitz dev
+blitz d
+blitz prisma migrate dev
+blitz dev
+vercel
+blitz build
+c
+blitz build
+vercel
+^sudo npm i -g vercel@latest
+c
+z
+c
+openssl rand -hex 16
+blitz d
+vercel
+c
+yarn add sass
+c
+blitz d
+blitz dev
+c
+blitz dev
+blitz generate pages index
+blitz -v
+c
+p hydrat
+c
+blitz dev
+yarn lint-staged
+blitz dev
+yarn prettier
+yarn pretty-quick
+yarn prettier -c
+yarn prettier *
+c
+blitz build
+blitz d
+z Projects
+ls
+cd tutorials
+ls
+git clone https://github.com/vercel/next-learn/tree/master/basics/typescript-final
+git clone https://github.com/vercel/next-learn/
+ls next-lern
+ls next-learn
+tree
+^tree
+ls
+cd next-learn
+ls
+z basics
+ls
+z type
+z typescript-final
+ls
+yarn install
+yarn dev
+vscodium .
+yarn add react-markdown
+blitz dev
+vercel
+yarn remove react-markdown
+yarn add gray-matter remark remark-html
+blitz dev
+yarn add date-fns
+blitz dev
+blitz build
+c
+blitz build
+c
+blitz build
+blitz dev
+adb
+p adb
+p android
+adb
+adb devices
+adb pair 192.168.254.68:42109
+adb pair 192.168.254.69:42109
+adb connect 192.168.254.69:42109
+adb connect 192.168.254.69:42561
+fastboot
+p telegram
+adb connect 192.168.254.69:42561
+adb connect 192.168.254.69:39883
+adb disconnect
+p android-platform
+fastboot
+adb devices
+adb connect 192.168.254.69
+adb connect 192.168.254.69:42337
+cd Downloads
+adb backup -apk -shared
+adb backup
+adb backup -shared
+adb connect
+adb disconnect
+c
+adb reboot bootloader 
+cd Downloads
+ls
+cd Bliss-v15.2-sunfish-OFFICIAL-factory-20220305
+kaasi
+p fastboot
+paru -S fastboot
+fb
+yarn dev
+z Variants
+blitzw -v
+blitz -v
+blitz new urmom
+cd urmom
+vscodium .
+yarn add @supabase/supabase-js
+blitz dev
+yarn add sass
+blitz dev
+c
+blitz dev
+blitz prisma migrate dev
+blitz prisma generate
+c
+blitz prisma migrate dev
+blitz prisma generate
+blitz dev
+blitz prisma studio
+^blitz prisma studio
+blitz prisma generate
+^blitz prisma studio
+blitz prisma generate
+zsh
+z
+c
+hx Templates/nushell/blitz.nu
+z nuchell
+z nushell
+z Templates
+ls
+z .nushell
+z .config/nushell
+ls
+hx blitz.nu
+zsh
+blitz prisma studio
+blitz prisma generate
+blitz prisma studio
+^blitz prisma db push
+blitz prisma generate
+blitz prisma studio
+blitz prisma generate
+blitz prisma studio
+blitz dev
+p postgres
+blitz prisma migrate dev
+p postgres
+blitz d
+^blitz prisma db push
+blitz d
+blitz generate crud quotes
+blitz -v
+c
+blitz dev
+blitz prisma migrate dev
+prisma
+blitz prisma generate
+blitz dev
+blitz prisma studio
+^blitz prisma reset
+blitz prisma studio
+blitz d
+blitz prisma studio
+blitz d
+blitz build
+c
+blitz build
+vercel --prod
+vercel -h
+vercel deploy --prod
+^vercel deploy --prod
+c
+blitz d
+blitz build
+blitz d
+p discord-chat-exporter-cli
+discord-chat-exporter-cli
+discord-chat-exporter-cli exportall
+discord-chat-exporter-cli exportall -t BQDlW4v0CKPGFxZ9CmpDdBaxt4IHNMWuUh4CyhRzXjJTydMJKtsdpB2pVclQ3FiQHZIDoVe0dPG_gY74uRhuu5bs75coRu7kyjB7efj2Mg7w5knWotL45JBYeuwRZtT2nOUFYTey4Pqh86-MclwF-dQIB3PYbWIph1bDF_7ZGrXIjVSi7GV0sxYap8rdhtj1ykMdDJjgBGTWCzCa45bO7w
+discord-chat-exporter-cli exportall --token BQDlW4v0CKPGFxZ9CmpDdBaxt4IHNMWuUh4CyhRzXjJTydMJKtsdpB2pVclQ3FiQHZIDoVe0dPG_gY74uRhuu5bs75coRu7kyjB7efj2Mg7w5knWotL45JBYeuwRZtT2nOUFYTey4Pqh86-MclwF-dQIB3PYbWIph1bDF_7ZGrXIjVSi7GV0sxYap8rdhtj1ykMdDJjgBGTWCzCa45bO7w
+discord-chat-exporter-cli exportall -t NzMyMDY4ODMxNDUwNzU5MjM4.GjWb_M.0j_D_jfSW-EKXQUl6fX8PklX52gx8Q7l-bIC64
+xbanish
+zsh
+c
+blitz dev
+blitz d
+neofetch
+paru -h
+yarn -h
+yarn autoclean
+yarn cache
+yarn cache clean
+paru -Sc
+paru -Scc

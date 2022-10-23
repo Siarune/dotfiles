@@ -93,6 +93,7 @@ export extern "blitz prisma generate" []
 export extern "blitz prisma migrate" []
 export extern "blitz prisma migrate dev" []
 export extern "blitz prisma migrate deploy" []
+export extern "blitz prisma studio" []
 
 # Generate pages, queries, mutations, and Prisma models into your project
 export extern "blitz generate" [

@@ -286,10 +286,11 @@ let-env config = {
 }
 
 #Prompt styling with oh-my-posh
-oh-my-posh init nu --config ~/.config/nushell/themes/sia.omp.json
-source ~/.oh-my-posh.nu
+oh-my-posh init nu
+source ~/.config/themes/oh-my-posh.nu
 
 #My Completions
+
 #source ~/.config/nushell/bun.nu
 source ~/.config/nushell/blitz.nu
 
@@ -303,6 +304,7 @@ source ~/.config/nushell/carapace.nu
 #aliases
 alias x = exit
 alias c = clear
+alias r = source ~/.config/nushell/config.nu
 alias p = paru
 alias w = cd ~/Documents/Projects
 alias sd = cd ~/Documents/Projects/siarune.dev

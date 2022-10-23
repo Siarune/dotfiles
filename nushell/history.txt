@@ -1870,3 +1870,91 @@ ddex bashrc
 ddex
 dotdrop install
 nu -c (fetch https://raw.githubusercontent.com/skelly37/nupac/master/installer.nu)
+x
+p jhead
+p syphon
+c
+p desmume
+p dolphin
+p -R padloc
+which padlock
+which padloc
+p -R padloc-bin
+p -R betterbird
+p -R betterbird-bin
+p -R bitwarden
+p dragon-player
+p dragon
+p -R dragon
+z Downloads
+gc https://github.com/chirag-droid/animeflix
+git clone https://github.com/chirag-droid/animeflix
+z ani
+ls
+z anime
+z animeflix
+ls
+yarn install
+yarn build
+yarn start
+tauri
+z
+z Projects
+git clone https://github.com/hoangvu12/Kaguya
+z
+cargo install tauri-cli
+z -
+yarn add -D @tauri-apps/cli
+cd Kaguya
+yarn add -D @tauri-apps/cli
+yarn tauri init
+btop
+yarn tauri dev
+zsh
+c
+p tabby
+btop
+nu -v
+btop
+paru powertop
+powertop
+sudo powertop
+paru powerstat
+powerstat
+powerstat -z
+paru -R powerstat
+oh-my-posh
+oh-my-posh config
+oh-my-posh init
+oh-my-posh init nu
+x
+c
+oh-my-posh init nu --config ~/.config/nushell/themes/sia.omp.json
+oh-my-posh init nu
+oh-my-posh init nu --config ~/Templates/.config/nushell/themes/sia.omp.json
+z
+sh hl.sh
+zsh
+x
+dotdrop install
+cd Templates
+dotdrop install
+source
+source ~/.config/nushell/config.nu
+zsh
+fish
+shell
+c
+cd Templates
+dotdrop install
+cd Templates
+c
+dotdrop install
+r
+c
+r
+zsh
+c
+fish
+c
+git diff

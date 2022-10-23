@@ -59,7 +59,6 @@
 		"ReadStateTypes": ["GUILD_EVENT", "NOTIFICATION_CENTER", "CHANNEL"],
 		"RelationshipTypes": ["FRIEND", "PENDING_INCOMING", "PENDING_OUTGOING"],
 		"Routes": ["CHANNEL_THREAD_VIEW", "MESSAGE_REQUESTS"],
-		"StatusTypes": ["STREAMING", "UNKNOWN", "DND"],
 		"UserFlags": ["HYPESQUAD", "BUG_HUNTER_LEVEL_1", "STAFF"],
 		"UserNotificationSettings": ["NULL", "NO_MESSAGES", "ALL_MESSAGES"],
 		"UserSettingsActionTypes": ["SLOW_USER_ACTION", "DAILY"],
@@ -81,6 +80,9 @@
 		}},
 		"ArrayUtils": {"props": ["isArrayLike", "zipObject"]},
 		"ChannelUtils": {"props": ["selectChannel", "selectPrivateChannel"]},
+		"ChatRestrictionUtils": {"strings": ["openWarningPopout", "userCanUsePremiumMessageLength"], "exported": false, "value": "exports", "map": {
+			"applyChatRestrictions": ["openWarningPopout", "userCanUsePremiumMessageLength"]
+		}},
 		"ConnectionProviderUtils": {"props": ["get", "isSupported", "filter"]},
 		"ConnectionUtils": {"props": ["setShowActivity", "setVisibility"]},
 		"ContextMenuUtils": {"strings": ["renderLazy", "type:\"CONTEXT_MENU_CLOSE\""], "exported": false, "value": "exports", "map": {
@@ -187,6 +189,7 @@
 		"TimestampUtils": {"props": ["fromTimestamp", "extractTimestamp"]},
 		"UploadUtils": {"props": ["upload", "instantBatchUpload"]},
 		"URLParser": {"props": ["parse", "resolveObject"]},
+		"UserNameUtils": {"props": ["getNickname", "getName", "useName"]},
 		"UserProfileUtils": {"strings": ["USER_AGREEMENTS", "user cannot be undefined"], "exported": false, "value": "exports", "map": {
 			"fetchProfile": [".apply("],
 			"getUser": ["\"USER_UPDATE\""]
@@ -456,32 +459,35 @@
 		}},
 		"Paginator": {"strings": ["totalPageCount", "selectedPage"]},
 		"PanelButton": {"strings": ["Masks.PANEL_BUTTON"]},
-		"PopoutCSSAnimator": {"name": "PopoutCSSAnimator"},
-		"PopoutFocusLock": {"strings": ["useFocusLock", "useImperativeHandle"], "value": "default"},
+		"PopoutFocusLock": {"strings": ["impressionName", "useImperativeHandle"], "funcStrings": ["impressionName"]},
 		"PrivateChannelItems": {"props": ["DirectMessage", "GroupDM"]},
-		"QuickSwitchItems": {"props": ["Channel", "GroupDM", "Header"]},
-		"RoleMention": {"strings": ["rolePopout", "RoleMention"], "value": "default"},
-		"Scrollers": {
-			"children": {
-				"Auto": {"props": ["AdvancedScrollerThin", "AdvancedScrollerAuto"], "value": "AdvancedScrollerAuto"},
-				"None": {"props": ["AdvancedScrollerThin", "AdvancedScrollerAuto"], "value": "AdvancedScrollerNone"},
-				"Thin": {"props": ["AdvancedScrollerThin", "AdvancedScrollerAuto"], "value": "AdvancedScrollerThin"}
-			}
-		},
-		"Spinner": {"name": "Spinner"},
-		"Status": {"name": "Status"},
-		"StatusPickerPopout": {"strings": ["\"StatusPickerPopout\""], "value": "default"},
+		"PrivateChannelItems": {"strings": ["handleCloseButtonMouseDown", "LEAVE_GROUP_DM_MANAGED_BODY"], "exported": false, "value": "exports", "map": {
+			"DirectMessage": ["getUser", "getRecipientId"],
+			"GroupDM": [".getGuildId"],
+			"LinkButton": [".apply(this"]
+		}},
+		"RoleMention": {"strings": ["rolePopout", "inlinePreview"], "funcStrings": ["inlinePreview"]},
+		"Scrollers": {"strings": [".fade", ".auto", "paddingFix", "getScrollerNode"], "exported": false, "value": "exports"},
+		"SpinnerComponents": {"strings": ["WANDERING_CUBES", "CHASING_DOTS"], "exported": false, "value": "exports", "map": {
+			"Spinner": ["LOADING"],
+			"Types": ["WANDERING_CUBES", "CHASING_DOTS"]
+		}},
+		"StatusComponents": {"strings": ["{mask", ".mask,", "UNKNOWN"], "exported": false, "value": "exports", "map": {
+			"AnimatedStatus": ["useSpring"],
+			"Status": [".mask,"],
+			"Types": ["UNKNOWN", "INVISIBLE"]
+		}},
 		"TextElement": {"strings": [".strong,", ".STANDARD"]},
 		"Timeout": {"protos": ["start", "stop", "isStarted"]},
-		"UserBadgeKeys": {"props": ["BadgeKeys"], "value": "BadgeKeys"},
 		"UserBadges": {"props": ["BadgeSizes"]},
-		"UserMention": {"strings": [".inlinePreview", "renderPopout", ".openContextMenu", ".isMobile"]},
-		"UserPopout": {"name": "UserPopoutContainer"},
-		"UserPopoutSection": {"name": "UserPopoutSection"},
-		"UserSummaryItem": {"name": "UserSummaryItem"},
-		"VideoForwardRef": {"strings": ["displayName=\"Video\"", "\"video\"", "HTMLImageElement"], "value": "default"},
-		"VoiceSettingsConstants": {"props": ["MediaEngineContextTypes", "DEFAULT_VOLUME"]},
-		"VolumeUtils": {"props": ["amplitudeToPerceptual", "perceptualToAmplitude"]}
+		"UserBadgeComponents": {"strings": [".PROFILE_USER_BADGES", "SIZE_24"], "exported": false, "value": "exports", "map": {
+			"UserBadges": [".PROFILE_USER_BADGES"],
+			"Sizes": ["\"SIZE_24\":"]
+		}},
+		"UserPopout": {"strings": ["canViewThemes?", "Unexpected missing user"], "funcStrings": ["canViewThemes"]},
+		"UserPopoutSection": {"strings": [".section,", ".lastSection"]},
+		"UserSummaryItem": {"strings": ["popoutUserId:", ".clickableAvatar"]},
+		"VideoForwardRef": {"strings": ["HTMLSourceElement", "autoPlay"], "funcStrings": ["externalRef"]}
 	},
 	"SvgIcons": {
 		"ACTIVITY": {
@@ -5452,6 +5458,9 @@
 		}
 	},
 	"BDFDB_Patrons": {
+		"711765867016224798": 	{"active": true,	"tier": "t3",	"text": "I thought this was my Wendy's Order",		"color": "",			"id": "jthunter (JeHu)"},
+		"105509397211406336": 	{"active": true,	"tier": "t2",	"text": "",											"color": "",			"id": "samtino (SgJeff)"},
+		"142377892565876736": 	{"active": true,	"tier": "t2",	"text": "",											"color": "",			"id": "ken (JimC)"},
 		"323494393828999168": 	{"active": true,	"tier": "t2",	"text": "",											"color": "",			"id": "polak (SzKu)"},
 		"543435944582447104": 	{"active": true,	"tier": "t3",	"text": "",											"color": "",			"id": "oaklaza"},
 		"96563253466898432": 	{"active": true,	"tier": "t2",	"text": "",											"color": "",			"id": "katsuro"},
@@ -5462,7 +5471,7 @@
 		"620397524494057513": 	{"active": true,	"tier": "t2",	"text": "",											"color": "",			"id": "FUSL"},
 		"798499176220327966": 	{"active": true,	"tier": "t2",	"text": "",											"color": "",			"id": "void (JaUt)"},
 		"363785301195358221": 	{"active": true,	"tier": "t2",	"text": "",											"color": "",			"id": "TRENT (KABEL)"},
-		"264486632525135883": 	{"active": true,	"tier": "t3",	"text": "Mr. Morale",								"color": "",			"id": "strix (A1C)"}
+		"1027026862708379849": 	{"active": true,	"tier": "t3",	"text": "Mr. Morale",								"color": "",			"id": "strix (A1C)"}
 	},
 	"BDFDB_Patron_Tiers": {
 		"t1": {

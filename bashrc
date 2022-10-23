@@ -62,3 +62,8 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 eval "$(oh-my-posh init bash)"
+
+alias x='exit'
+alias c='clear'
+alias p='paru'
+alias r='source ~/.bashrc'
