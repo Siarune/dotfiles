@@ -10,6 +10,7 @@
 		"general": {
 			"addOnlineCount": true,
 			"showDiscriminator": false,
+			"showTimestamp": false,
 			"muteOnDND": false,
 			"openOnClick": false
 		},
@@ -74,6 +75,16 @@
 				"song": null,
 				"mute": false
 			},
+			"toastscreensharing": {
+				"url": null,
+				"song": null,
+				"mute": false
+			},
+			"desktopscreensharing": {
+				"url": null,
+				"song": null,
+				"mute": false
+			},
 			"toastoffline": {
 				"url": null,
 				"song": null,
@@ -92,6 +103,7 @@
 			"playing": "$user started playing '$game'",
 			"listening": "$user started listening to '$song'",
 			"streaming": "$user started streaming '$game'",
+			"screensharing": "$user started screensharing",
 			"offline": "$user changed status to '$status'",
 			"login": "$user just logged in '$status'",
 			"custom": "$user changed status to '$custom'"
@@ -112,7 +124,8 @@
 				"800828943594815538": {},
 				"828178444944146444": {},
 				"842124146918162433": {},
-				"875478933364158534": {}
+				"875478933364158534": {},
+				"492498030025637890": {}
 			},
 			"strangers": {}
 		}

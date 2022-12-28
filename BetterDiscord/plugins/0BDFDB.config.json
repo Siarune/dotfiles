@@ -1,14 +1,21 @@
 {
 	"all": {
 		"changeLogs": {
-			"BDFDB": "2.3.2",
-			"EditUsers": "4.5.5",
+			"BDFDB": "2.9.8",
+			"BetterFriendList": "1.4.7",
+			"EditUsers": "4.6.9",
+			"FriendNotifications": "1.8.5",
 			"GameActivityToggle": "1.1.3",
-			"ImageUtilities": "4.7.2",
-			"OpenSteamLinksInApp": "1.1.4",
-			"PersonalPins": "2.1.0",
-			"ShowHiddenChannels": "3.1.7",
-			"SpotifyControls": "1.2.5"
+			"GoogleSearchReplace": "1.3.4",
+			"ImageUtilities": "4.9.5",
+			"OpenSteamLinksInApp": "1.1.5",
+			"PersonalPins": "2.1.4",
+			"PluginRepo": "2.4.0",
+			"ServerDetails": "1.1.3",
+			"ShowHiddenChannels": "9.9.9",
+			"SplitLargeMessages": "1.7.9",
+			"SpotifyControls": "1.3.0",
+			"ThemeRepo": "2.4.2"
 		},
 		"choices": {
 			"toastPosition": "right"
@@ -20,8 +27,8 @@
 			"useChromium": false
 		},
 		"hashes": {
-			"0BDFDB.data.json": "020ad886d1738dc7454d6c3cbc55684dd745782a",
-			"0BDFDB.raw.css": "96fb638350f77c79c3648050d58a0ea7a700ea1b"
+			"0BDFDB.data.json": "2ffd4982fe6f17e1485441c7fceb36f2af81df54",
+			"0BDFDB.raw.css": "141c8ed61c0a328bfdea5e9491afb0e2bf77530f"
 		}
 	}
 }

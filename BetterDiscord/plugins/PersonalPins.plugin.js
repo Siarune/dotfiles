@@ -2,7 +2,7 @@
  * @name PersonalPins
  * @author DevilBro
  * @authorId 278543574059057154
- * @version 2.1.1
+ * @version 2.1.4
  * @description Allows you to locally pin Messages
  * @invite Jx3TjNS
  * @donate https://www.paypal.me/MircoWittrien
@@ -13,20 +13,16 @@
  */
 
 module.exports = (_ => {
-	const config = {
-		"info": {
-			"name": "PersonalPins",
-			"author": "DevilBro",
-			"version": "2.1.1",
-			"description": "Allows you to locally pin Messages"
-		}
+	const changeLog = {
+		
 	};
 
 	return !window.BDFDB_Global || (!window.BDFDB_Global.loaded && !window.BDFDB_Global.started) ? class {
-		getName () {return config.info.name;}
-		getAuthor () {return config.info.author;}
-		getVersion () {return config.info.version;}
-		getDescription () {return `The Library Plugin needed for ${config.info.name} is missing. Open the Plugin Settings to download it. \n\n${config.info.description}`;}
+		constructor (meta) {for (let key in meta) this[key] = meta[key];}
+		getName () {return this.name;}
+		getAuthor () {return this.author;}
+		getVersion () {return this.version;}
+		getDescription () {return `The Library Plugin needed for ${this.name} is missing. Open the Plugin Settings to download it. \n\n${this.description}`;}
 		
 		downloadLibrary () {
 			require("request").get("https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js", (e, r, b) => {
@@ -39,7 +35,7 @@ module.exports = (_ => {
 			if (!window.BDFDB_Global || !Array.isArray(window.BDFDB_Global.pluginQueue)) window.BDFDB_Global = Object.assign({}, window.BDFDB_Global, {pluginQueue: []});
 			if (!window.BDFDB_Global.downloadModal) {
 				window.BDFDB_Global.downloadModal = true;
-				BdApi.showConfirmationModal("Library Missing", `The Library Plugin needed for ${config.info.name} is missing. Please click "Download Now" to install it.`, {
+				BdApi.showConfirmationModal("Library Missing", `The Library Plugin needed for ${this.name} is missing. Please click "Download Now" to install it.`, {
 					confirmText: "Download Now",
 					cancelText: "Cancel",
 					onCancel: _ => {delete window.BDFDB_Global.downloadModal;},
@@ -49,13 +45,13 @@ module.exports = (_ => {
 					}
 				});
 			}
-			if (!window.BDFDB_Global.pluginQueue.includes(config.info.name)) window.BDFDB_Global.pluginQueue.push(config.info.name);
+			if (!window.BDFDB_Global.pluginQueue.includes(this.name)) window.BDFDB_Global.pluginQueue.push(this.name);
 		}
 		start () {this.load();}
 		stop () {}
 		getSettingsPanel () {
 			let template = document.createElement("template");
-			template.innerHTML = `<div style="color: var(--header-primary); font-size: 16px; font-weight: 300; white-space: pre; line-height: 22px;">The Library Plugin needed for ${config.info.name} is missing.\nPlease click <a style="font-weight: 500;">Download Now</a> to install it.</div>`;
+			template.innerHTML = `<div style="color: var(--header-primary); font-size: 16px; font-weight: 300; white-space: pre; line-height: 22px;">The Library Plugin needed for ${this.name} is missing.\nPlease click <a style="font-weight: 500;">Download Now</a> to install it.</div>`;
 			template.content.firstElementChild.querySelector("a").addEventListener("click", this.downloadLibrary);
 			return template.content.firstElementChild;
 		}
@@ -85,6 +81,7 @@ module.exports = (_ => {
 				for (let guild_id in notes) for (let channel_id in notes[guild_id]) for (let message_idPOS in notes[guild_id][channel_id]) {
 					let message = JSON.parse(notes[guild_id][channel_id][message_idPOS].message);
 					message.author = new BDFDB.DiscordObjects.User(message.author);
+					if (message.interaction && message.interaction.user) message.interaction.user = new BDFDB.DiscordObjects.User(message.interaction.user);
 					message.timestamp = new BDFDB.DiscordObjects.Timestamp(message.timestamp);
 					message.editedTimestamp = message.editedTimestamp && new BDFDB.DiscordObjects.Timestamp(message.editedTimestamp);
 					if (message.customRenderedContent && message.customRenderedContent.content.length) message.customRenderedContent.content = BDFDB.ReactUtils.objectToReact(message.customRenderedContent.content);
@@ -97,7 +94,7 @@ module.exports = (_ => {
 					message = new BDFDB.DiscordObjects.Message(message);
 					let channel = notes[guild_id][channel_id][message_idPOS].channel && new BDFDB.DiscordObjects.Channel(JSON.parse(notes[guild_id][channel_id][message_idPOS].channel));
 					if (!channel) {
-						channel = BDFDB.LibraryModules.ChannelStore.getChannel(message.channel_id);
+						channel = BDFDB.LibraryStores.ChannelStore.getChannel(message.channel_id);
 						if (channel) {
 							updateData = true;
 							notes[guild_id][channel_id][message_idPOS].channel = JSON.stringify(channel);
@@ -115,7 +112,7 @@ module.exports = (_ => {
 				}
 				if (updateData) BDFDB.DataUtils.save(notes, _this, "notes");
 				let allCount = messages.length;
-				let currentChannel = BDFDB.LibraryModules.ChannelStore.getChannel(BDFDB.LibraryModules.LastChannelStore.getChannelId()) || {};
+				let currentChannel = BDFDB.LibraryStores.ChannelStore.getChannel(BDFDB.LibraryStores.SelectedChannelStore.getChannelId()) || {};
 				switch (popoutProps.selectedFilter.value) {
 					case "channel":
 						messages = messages.filter(m => m.channel_id == currentChannel.id);
@@ -139,13 +136,13 @@ module.exports = (_ => {
 			renderMessage(note, message, channel) {
 				if (!message || !channel) return null;
 				let channelName = channel.name;
-				let guild = channel.guild_id && BDFDB.LibraryModules.GuildStore.getGuild(channel.guild_id);
+				let guild = channel.guild_id && BDFDB.LibraryStores.GuildStore.getGuild(channel.guild_id);
 				let role = guild && BDFDB.LibraryModules.PermissionRoleUtils.getHighestRole(guild, message.author.id);
 				if (role) message.colorString = role.colorString;
 				if (popoutProps.selectedFilter.value != "channel" && !channelName && channel.recipients.length > 0) {
 					for (let dmuser_id of channel.recipients) {
 						channelName = channelName ? channelName + ", @" : channelName;
-						channelName = channelName + ((BDFDB.LibraryModules.UserStore.getUser(dmuser_id) || {}).username || BDFDB.LanguageUtils.LanguageStrings.UNKNOWN_USER);
+						channelName = channelName + ((BDFDB.LibraryStores.UserStore.getUser(dmuser_id) || {}).username || BDFDB.LanguageUtils.LanguageStrings.UNKNOWN_USER);
 					}
 				}
 				return [
@@ -156,13 +153,13 @@ module.exports = (_ => {
 								tag: "span",
 								className: BDFDB.disCN.messagespopoutchannelname,
 								onClick: _ => {
-									if (!channel.guild_id || BDFDB.LibraryModules.GuildStore.getGuild(channel.guild_id)) BDFDB.LibraryModules.HistoryUtils.transitionTo(BDFDB.DiscordConstants.Routes.CHANNEL(channel.guild_id, channel.id));
+									if (!channel.guild_id || BDFDB.LibraryStores.GuildStore.getGuild(channel.guild_id)) BDFDB.LibraryModules.HistoryUtils.transitionTo(BDFDB.DiscordConstants.Routes.CHANNEL(channel.guild_id, channel.id));
 								},
 								children: channelName ? ((channel.guild_id ? "#" : "@") + channelName) : "???"
 							}),
 							popoutProps.selectedFilter.value == "all" ? BDFDB.ReactUtils.createElement("span", {
 								className: BDFDB.disCN.messagespopoutguildname,
-								children: channel.guild_id ? (BDFDB.LibraryModules.GuildStore.getGuild(channel.guild_id) || {}).name || BDFDB.LanguageUtils.LanguageStrings.GUILD_UNAVAILABLE_HEADER : BDFDB.LanguageUtils.LanguageStrings.DIRECT_MESSAGES
+								children: channel.guild_id ? (BDFDB.LibraryStores.GuildStore.getGuild(channel.guild_id) || {}).name || BDFDB.LanguageUtils.LanguageStrings.GUILD_UNAVAILABLE_HEADER : BDFDB.LanguageUtils.LanguageStrings.DIRECT_MESSAGES
 							}) : null
 						]
 					}),
@@ -175,11 +172,11 @@ module.exports = (_ => {
 								message: message,
 								channel: channel,
 								onContextMenu: e => BDFDB.MessageUtils.openMenu(message, e, true)
-							}),
+							}, true),
 							BDFDB.ReactUtils.createElement("div", {
 								className: BDFDB.disCN.messagespopoutactionbuttons,
 								children: [
-									(!channel.guild_id || BDFDB.LibraryModules.GuildStore.getGuild(channel.guild_id)) && BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Clickable, {
+									(!channel.guild_id || BDFDB.LibraryStores.GuildStore.getGuild(channel.guild_id)) && BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Clickable, {
 										className: BDFDB.disCN.messagespopoutjumpbutton,
 										onClick: _ => BDFDB.LibraryModules.HistoryUtils.transitionTo(BDFDB.DiscordConstants.Routes.CHANNEL(channel.guild_id, channel.id, message.id)),
 										children: BDFDB.ReactUtils.createElement("div", {
@@ -192,22 +189,10 @@ module.exports = (_ => {
 											if (message.content || message.attachments.length > 1) {
 												let text = message.content || "";
 												for (let attachment of message.attachments) if (attachment.url) text += ((text ? "\n" : "") + attachment.url);
-												BDFDB.LibraryRequires.electron.clipboard.write({text});
+												BDFDB.LibraryModules.WindowUtils.copy(text);
 											}
 											else if (message.attachments.length == 1 && message.attachments[0].url) {
-												BDFDB.LibraryRequires.request(message.attachments[0].url, {encoding: null}, (error, response, body) => {
-													if (body) {
-														if (BDFDB.LibraryRequires.process.platform === "win32" || BDFDB.LibraryRequires.process.platform === "darwin") {
-															BDFDB.LibraryRequires.electron.clipboard.write({image: BDFDB.LibraryRequires.electron.nativeImage.createFromBuffer(body)});
-														}
-														else {
-															let file = BDFDB.LibraryRequires.path.join(BDFDB.LibraryRequires.process.env.USERPROFILE || BDFDB.LibraryRequires.process.env.HOMEPATH || BDFDB.LibraryRequires.process.env.HOME, "personalpinstemp.png");
-															BDFDB.LibraryRequires.fs.writeFileSync(file, body, {encoding: null});
-															BDFDB.LibraryRequires.electron.clipboard.write({image: file});
-															BDFDB.LibraryRequires.fs.unlinkSync(file);
-														}
-													}
-												});
+												BDFDB.LibraryModules.WindowUtils.copyImage(message.attachments[0].url);
 											}
 										},
 										children: BDFDB.ReactUtils.createElement("div", {
@@ -363,7 +348,7 @@ module.exports = (_ => {
 							amount: 25,
 							copyToBottom: true,
 							renderItem: messageData => this.renderMessage(messageData.note, messageData.message, messageData.channel).flat(10).filter(n => n)
-						}) : BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.MessagesPopoutComponents.EmptyStateCenter, {
+						}) : BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.MessagesPopoutComponents.EmptyState, {
 							msg: BDFDB.LanguageUtils.LanguageStrings.AUTOCOMPLETE_NO_RESULTS_HEADER,
 							image: BDFDB.DiscordUtils.getTheme() == BDFDB.disCN.themelight ? "/assets/03c7541028afafafd1a9f6a81cb7f149.svg" : "/assets/6793e022dc1b065b21f12d6df02f91bd.svg"
 						})
@@ -384,10 +369,14 @@ module.exports = (_ => {
 					}
 				};
 			
-				this.patchedModules = {
-					before: {
-						HeaderBar: "default"
-					}
+				this.modulePatches = {
+					before: [
+						"HeaderBar"
+					],
+					after: [
+						"MessageActionsContextMenu",
+						"MessageToolbar"
+					]
 				};
 				
 				this.css = `
@@ -503,7 +492,7 @@ module.exports = (_ => {
 				}
 			}
 			
-			onMessageOptionContextMenu (e) {
+			processMessageActionsContextMenu (e) {
 				if (e.instance.props.message && e.instance.props.channel) {
 					let note = this.getNoteData(e.instance.props.message, e.instance.props.channel);
 					let [children, index] = BDFDB.ContextMenuUtils.findItem(e.returnvalue, {id: ["pin", "unpin"]});
@@ -526,7 +515,7 @@ module.exports = (_ => {
 				}
 			}
 		
-			onMessageOptionToolbar (e) {
+			processMessageToolbar (e) {
 				if (e.instance.props.expanded && e.instance.props.message && e.instance.props.channel) {
 					let note = this.getNoteData(e.instance.props.message, e.instance.props.channel);
 					e.returnvalue.props.children.unshift(BDFDB.ReactUtils.createElement(class extends BdApi.React.Component {
@@ -565,7 +554,8 @@ module.exports = (_ => {
 			}
 
 			processHeaderBar (e) {
-				let [children, index] = BDFDB.ReactUtils.findParent(BDFDB.ObjectUtils.get(e.instance, "props.toolbar"), {name: "FluxContainer(Search)"});
+				if (!e.instance.props.toolbar) return;
+				let [children, index] = BDFDB.ReactUtils.findParent(e.instance.props.toolbar, {props: [["className", BDFDB.disCN.channelheadersearch]]});
 				if (index > -1) children.splice(index, 0, BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.PopoutContainer, {
 					children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.TooltipContainer, {
 						text: this.labels.popout_note,
@@ -591,7 +581,7 @@ module.exports = (_ => {
 						popoutProps.selectedSort = popoutProps.selectedSort || this.getPopoutValue(this.settings.choices.defaultSort || sortKeys[0], "sort");
 						popoutProps.selectedOrder = popoutProps.selectedOrder || this.getPopoutValue(this.settings.choices.defaultOrder || orderKeys[0], "order");
 						popoutProps.searchKey = popoutProps.searchKey || "";
-						return BDFDB.ReactUtils.createElement(NotesPopoutComponent, {});
+						return BDFDB.ReactUtils.createElement(NotesPopoutComponent, {}, true);
 					}
 				}));
 			}
@@ -605,7 +595,7 @@ module.exports = (_ => {
 
 			addMessageToNotes (message, channel) {
 				if (!message) return;
-				channel = channel || BDFDB.LibraryModules.ChannelStore.getChannel(message.channel_id);
+				channel = channel || BDFDB.LibraryStores.ChannelStore.getChannel(message.channel_id);
 				let guild_id = channel.guild_id || BDFDB.DiscordConstants.ME;
 				notes[guild_id] = notes[guild_id] || {};
 				notes[guild_id][channel.id] = notes[guild_id][channel.id] || {}
@@ -630,7 +620,7 @@ module.exports = (_ => {
 
 			getNoteData (message, channel) {
 				if (!message) return;
-				channel = channel || BDFDB.LibraryModules.ChannelStore.getChannel(message.channel_id);
+				channel = channel || BDFDB.LibraryStores.ChannelStore.getChannel(message.channel_id);
 				let guild_id = channel.guild_id || BDFDB.DiscordConstants.ME;
 				return notes[guild_id] && notes[guild_id][channel.id] && notes[guild_id][channel.id][message.id];
 			}
@@ -1129,5 +1119,5 @@ module.exports = (_ => {
 				}
 			}
 		};
-	})(window.BDFDB_Global.PluginUtils.buildPlugin(config));
+	})(window.BDFDB_Global.PluginUtils.buildPlugin(changeLog));
 })();

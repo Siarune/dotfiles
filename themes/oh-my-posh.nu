@@ -1,5 +1,5 @@
 let-env POWERLINE_COMMAND = 'oh-my-posh'
-let-env POSH_THEME = "/home/sia/.config/themes/sia.omp.json"
+let-env POSH_THEME = "~/.config/themes/sia.omp.json"
 let-env PROMPT_INDICATOR = ""
 # By default displays the right prompt on the first line
 # making it annoying when you have a multiline prompt

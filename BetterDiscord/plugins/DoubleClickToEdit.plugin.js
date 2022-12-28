@@ -1,7 +1,7 @@
 /**
  * @name Double Click To Edit
  * @author Farcrada, original idea by Jiiks
- * @version 9.3.7
+ * @version 9.4.3
  * @description Double click a message you wrote to quickly edit it.
  * 
  * @invite qH6UWCwfTu
@@ -11,27 +11,29 @@
  */
 
 /** @type {typeof import("react")} */
-const React = BdApi.React;
+const React = BdApi.React,
 
-const config = {
-	info: {
-		name: "Double Click To Edit",
-		id: "DoubleClickToEdit",
-		description: "Double click a message you wrote to quickly edit it",
-		version: "9.3.7",
-		author: "Farcrada",
-		updateUrl: "https://raw.githubusercontent.com/Farcrada/DiscordPlugins/master/Double-click-to-edit/DoubleClickToEdit.plugin.js"
-	}
-};
+	{ Webpack, Webpack: { Filters } } = BdApi,
 
-const blacklist = [
-	//Object
-	"video",
-	"emoji",
-	//Classes
-	"content",
-	"reactionInner"
-];
+	config = {
+		info: {
+			name: "Double Click To Edit",
+			id: "DoubleClickToEdit",
+			description: "Double click a message you wrote to quickly edit it",
+			version: "9.4.3",
+			author: "Farcrada",
+			updateUrl: "https://raw.githubusercontent.com/Farcrada/DiscordPlugins/master/Double-click-to-edit/DoubleClickToEdit.plugin.js"
+		}
+	},
+
+	blacklist = [
+		//Object
+		"video",
+		"emoji",
+		//Classes
+		"content",
+		"reactionInner"
+	];
 
 
 module.exports = class DoubleClickToEdit {
@@ -39,41 +41,49 @@ module.exports = class DoubleClickToEdit {
 
 	load() {
 		try { global.ZeresPluginLibrary.PluginUpdater.checkForUpdate(config.info.name, config.info.version, config.info.updateUrl); }
-		catch (err) { console.error(this.getName(), "Failed to reach the ZeresPluginLibrary for Plugin Updater.", err); }
+		catch (err) { console.error(config.info.name, "Failed to reach the ZeresPluginLibrary for Plugin Updater.", err); }
 	}
 
 	start() {
 		try {
 			//Classes
-			this.selectedClass = BdApi.findModuleByProps("message", "selected").selected;
-			this.messagesWrapper = BdApi.findModuleByProps("empty", "messagesWrapper").messagesWrapper;
+			this.selectedClass = Webpack.getModule(Filters.byProps("message", "selected")).selected;
+			this.messagesWrapper = Webpack.getModule(Filters.byProps("empty", "messagesWrapper")).messagesWrapper;
 
 			//Copy to clipboard
-			this.copyToClipboard = BdApi.findModuleByProps("clipboard").clipboard.copy;
+			this.copyToClipboard = Webpack.getModule(Filters.byProps("clipboard", "app")).clipboard.copy;
 
 			//Reply functions
-			this.replyToMessage = BdApi.findModule(m => m.toString().includes("dispatchToLastSubscribed("));
-			this.getChannel = BdApi.findModuleByProps("getChannel", "getDMFromUserId").getChannel;
+			this.replyToMessage = Webpack.getModule(m => m?.toString?.()?.replace('\n', '')?.search(/(channel:[\w|\w],message:[\w|\w],shouldMention:!)/) > -1, { searchExports: true })
+			this.getChannel = Webpack.getModule(Filters.byProps("getChannel", "getDMFromUserId")).getChannel;
 
 			//Stores
-			this.MessageStore = BdApi.findModuleByProps("receiveMessage", "editMessage");
-			this.CurrentUserStore = BdApi.findModuleByProps("getCurrentUser");
+			this.MessageStore = Webpack.getModule(Filters.byProps("receiveMessage", "editMessage"));
+			this.CurrentUserStore = Webpack.getModule(Filters.byProps("getCurrentUser"));
 
 			//Settings
-			this.SwitchItem = BdApi.findModule(m => m.toString().includes("t=e.value,r=e.disabled"))
+			const filter = Webpack.Filters.byStrings(`["tag","children","className","faded","disabled","required","error"]`),
+				target = Webpack.getModule(m => Object.values(m).some(filter));
+			this.FormTitle = target[Object.keys(target).find(k => filter(target[k]))];
+			this.RadioItem = Webpack.getModule(m => m?.Sizes?.NONE, { searchExports: true });
+			this.SwitchItem = Webpack.getModule(Filters.byStrings("=e.note"));
+
 
 			//Events
 			global.document.addEventListener('dblclick', this.doubleclickFunc);
 
+			//Load settings
 			this.doubleClickToReplySetting = BdApi.loadData(config.info.id, "doubleClickToReplySetting") ?? false;
+			this.copyBeforeAction = BdApi.loadData(config.info.id, "copyBeforeAction") ?? false;
+			this.copyBeforeActionModifier = BdApi.loadData(config.info.id, "copyBeforeActionModifier") ?? "shift";
 		}
 		catch (err) {
 			try {
-				console.error("Attempting to stop after starting error...", err)
+				console.error("Attempting to stop after starting error...", err);
 				this.stop();
 			}
 			catch (err) {
-				console.error(this.getName() + ".stop()", err);
+				console.error(config.info.name + ".stop()", err);
 			}
 		}
 	}
@@ -89,21 +99,56 @@ module.exports = class DoubleClickToEdit {
 		//which also makes it an anonymous functional component;
 		//Pretty neat.
 		return () => {
-			const [state, setState] = React.useState(this.doubleClickToReplySetting);
+			const [replyState, setReplyState] = React.useState(this.doubleClickToReplySetting),
+				[copyState, setCopyState] = React.useState(this.copyBeforeAction),
+				[copyModifierState, setCopyModifierState] = React.useState(this.copyBeforeActionModifier);
 
-			return React.createElement(this.SwitchItem, {
-				//The state that is loaded with the default value
-				value: state,
-				note: "Enable to double click another's message and start replying.",
-				//Since onChange passes the current state we can simply invoke it as such
-				onChange: (newState) => {
-					//Saving the new state
-					this.doubleClickToReplySetting = newState;
-					BdApi.saveData(config.info.id, "doubleClickToReplySetting", newState);
-					setState(newState);
-				}
-				//Discord Is One Of Those
-			}, "Enable Replying");
+			return [
+				React.createElement(this.SwitchItem, {
+					//The state that is loaded with the default value
+					value: replyState,
+					note: "Double click another's message and start replying.",
+					//Since onChange passes the current state we can simply invoke it as such
+					onChange: (newState) => {
+						//Saving the new state
+						this.doubleClickToReplySetting = newState;
+						BdApi.saveData(config.info.id, "doubleClickToReplySetting", newState);
+						setReplyState(newState);
+					}
+					//Discord Is One Of Those
+				}, "Enable Replying"),
+				React.createElement(this.SwitchItem, {
+					//The state that is loaded with the default value
+					value: copyState,
+					note: "Copy selection before entering edit-mode.",
+					//Since onChange passes the current state we can simply invoke it as such
+					onChange: (newState) => {
+						//Saving the new state
+						this.copyBeforeAction = newState;
+						BdApi.saveData(config.info.id, "copyBeforeAction", newState);
+						setCopyState(newState);
+					}
+					//Discord Is One Of Those
+				}, "Enable Copying"),
+				React.createElement(this.FormTitle, {
+					tag: "h3",
+					disabled: !copyState
+				}, "Modifier to hold before copying text"),
+				React.createElement(this.RadioItem, {
+					disabled: !copyState,
+					value: copyModifierState,
+					options: [
+						{ name: "Shift", value: "shift" },
+						{ name: "Ctrl", value: "ctrl" },
+						{ name: "Alt", value: "alt" }
+					],
+					onChange: (newState) => {
+						this.copyBeforeActionModifier = newState.value;
+						BdApi.saveData(config.info.id, "copyBeforeActionModifier", newState.value);
+						setCopyModifierState(newState.value);
+					}
+				}, "Copy Modifier")
+			];
 		}
 	}
 
@@ -131,19 +176,30 @@ module.exports = class DoubleClickToEdit {
 
 		//When selecting text it might be handy to have it auto-copy.
 		if (this.copyBeforeAction)
-			if (this.copyBeforeActionModifier)
-				this.copyToClipboard(document.getSelection().toString());
+			switch (this.copyBeforeActionModifier) {
+				case "shift": if (!e.shiftKey) break;
+					this.copyToClipboard(document.getSelection().toString());
+					break;
+				case "ctrl": if (!e.ctrlKey) break;
+					this.copyToClipboard(document.getSelection().toString());
+					break;
+				case "alt": if (!e.altKey) break;
+					this.copyToClipboard(document.getSelection().toString());
+					break;
+			}
 
 		//The message instance is filled top to bottom, as it is in view.
 		//As a result, "baseMessage" will be the actual message you want to address. And "message" will be the reply.
 		//Maybe the message has a reply, so check if "baseMessage" exists and otherwise fallback on "message".
 		const message = this.getValueFromKey(instance, "baseMessage") ?? this.getValueFromKey(instance, "message");
 
-		if (message)
-			if (message.author.id === this.CurrentUserStore.getCurrentUser().id)
-				this.MessageStore.startEditMessage(message.channel_id, message.id, message.content);
-			else if (this.doubleClickToReplySetting)
-				this.replyToMessage(this.getChannel(message.channel_id), message, e);
+		if (!message)
+			return;
+
+		if (message.author.id === this.CurrentUserStore.getCurrentUser().id)
+			this.MessageStore.startEditMessage(message.channel_id, message.id, message.content);
+		else if (this.doubleClickToReplySetting)
+			this.replyToMessage(this.getChannel(message.channel_id), message, e);
 	}
 
 	getValueFromKey(instance, searchkey) {

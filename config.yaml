@@ -7,40 +7,44 @@ config:
   workdir: ~/Templates
 dotfiles:
   nushell:
-    src:  nushell
-    dst:  ~/.config/nushell
+    src: nushell
+    dst: ~/.config/nushell
     link: absolute
   helix:
-    src:  helix
-    dst:  ~/.config/helix
+    src: helix
+    dst: ~/.config/helix
     link: absolute
   spicetify:
-    src:  spicetify/config-xpui.ini
-    dst:  ~/.config/spicetify/config-xpui.ini
+    src: spicetify/config-xpui.ini
+    dst: ~/.config/spicetify/config-xpui.ini
     link: absolute
   betterdiscord:
-    src:  BetterDiscord
-    dst:  ~/.config/BetterDiscord
+    src: BetterDiscord
+    dst: ~/.config/BetterDiscord
     link: absolute
   fishrc:
-    src:  fish/config.fish
-    dst:  ~/.config/fish/config.fish
+    src: fish/config.fish
+    dst: ~/.config/fish/config.fish
     link: absolute
   latte:
-    src:  latte
-    dst:  ~/.config/latte
+    src: latte
+    dst: ~/.config/latte
     link: absolute
   bashrc:
-    src:  bashrc
-    dst:  ~/.bashrc
+    src: bashrc
+    dst: ~/.bashrc
     link: absolute
   zshrc:
-    src:  zsh/zshrc
-    dst:  ~/.zshrc
+    src: zsh/zshrc
+    dst: ~/.zshrc
     link: absolute
   themes:
-    src:  themes
-    dst:  ~/.config/themes
+    src: themes
+    dst: ~/.config/themes
+    link: absolute
+  firefox:
+    src: firefox/chrome
+    dst: ~/.mozilla/firefox/vtvz40gz.default-release/chrome
     link: absolute
 profiles:
   Quetz:
@@ -54,6 +58,7 @@ profiles:
     - bashrc
     - zshrc
     - themes
+    - firefox
   garrr:
     dotfiles:
     - nushell

@@ -22,7 +22,7 @@ def "types" [] {
 
 # export extern "blitz" []
 
-# Generates a new Blitz project in the current directory
+# Generates a new Blitz project
 export extern "blitz new" [
 	name: string
 	--template: string@"templates"				# Lets you choose a project's template
