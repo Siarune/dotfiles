@@ -5,16 +5,16 @@
       "alignment": "left",
       "segments": [
         {
-          "background": "#303651",
-          "foreground": "#AEA4BF",
+          "background": "#24273A",
+          "foreground": "#CAD3F5",
           "leading_diamond": "\ue0b6",
           "style": "diamond",
           "template": "{{ .UserName }}@{{.HostName}} ",
           "type": "shell"
         },
         {
-          "background": "#303651",
-          "foreground": "#AEA4BF",
+          "background": "#24273A",
+          "foreground": "#CAD3F5",
           "style": "diamond",
           "template": "\u276f",
           "trailing_diamond": "\ue0b4",
@@ -40,12 +40,12 @@
           "leading_diamond": "\ue0b6",
           "trailing_diamond": "\ue0b4 ",
           "template": "{{ if gt .Code 0 }}\uf00d {{ .Meaning }}{{ else }}\uf42e{{ end }}",
-          "background": "#303651",
-          "foreground": "#AEA4BF"
+          "background": "#24273A",
+          "foreground": "#CAD3F5"
         },
         {
-          "background": "#303651",
-          "foreground": "#AEA4BF",
+          "background": "#24273A",
+          "foreground": "#CAD3F5",
           "leading_diamond": "\ue0b6",
           "properties": {
             "style": "austin",
@@ -57,8 +57,8 @@
           "type": "executiontime"
         },
         {
-          "background": "#303651",
-          "foreground": "#AEA4BF",
+          "background": "#24273A",
+          "foreground": "#CAD3F5",
           "leading_diamond": "\ue0b6",
           "properties": {
             "style": "folder"
@@ -69,8 +69,8 @@
           "type": "path"
         },
         {
-          "background": "#303651",
-          "foreground": "#AEA4BF",
+          "background": "#24273A",
+          "foreground": "#CAD3F5",
           "leading_diamond": " \ue0b6",
           "properties": {
             "branch_icon": ""
@@ -81,7 +81,7 @@
           "type": "git"
         },
         {
-          "background": "#303651",
+          "background": "#24273A",
           "foreground": "#E4F34A",
           "leading_diamond": " \ue0b6",
           "properties": {
@@ -93,7 +93,7 @@
           "type": "python"
         },
         {
-          "background": "#303651",
+          "background": "#24273A",
           "foreground": "#7FD5EA",
           "leading_diamond": " \ue0b6",
           "properties": {

@@ -13,6 +13,7 @@ alias nuedit = nvim ~/.config/nushell/config.nu
 alias aliases = nvim ~/.config/nushell/aliases.nu
 alias path = echo $env.PATH
 alias trash = rm -t
+alias pn = pnpm
 
 #Dotdrop
 alias dd = dotdrop
@@ -20,3 +21,4 @@ alias ddim = dotdrop import
 alias ddex = dotdrop install
 
 # alias hgc = hg convert --datesort . dist-mercurial
+# alias info = [[(sys).host.sessions.name.2] [(sys).host.hostname] [(sys).host.name] [(sys).host.kernel_version] [(sys).host.uptime]] | flatten | table

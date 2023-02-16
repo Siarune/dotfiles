@@ -13,3 +13,5 @@ zoxide init nushell --hook prompt | save ~/.zoxide.nu
 zoxide init nushell --hook prompt | save ~/.zoxide.nu -f
 r
 x
+r
+nvim .config/nushell/aliases.nu
