@@ -2,7 +2,7 @@
  * @name SpotifyControls
  * @author DevilBro
  * @authorId 278543574059057154
- * @version 1.3.0
+ * @version 1.3.2
  * @description Adds a Control Panel while listening to Spotify on a connected Account
  * @invite Jx3TjNS
  * @donate https://www.paypal.me/MircoWittrien
@@ -355,7 +355,7 @@ module.exports = (_ => {
 					children: _this.defaults.buttons[this.props.type] && _this.defaults.buttons[this.props.type].icons ? (_this.defaults.buttons[this.props.type].icons[this.props.icon] || _this.defaults.buttons[this.props.type].icons[0]) : "?",
 					onClick: this.props.disabled ? _ => {} : this.props.onClick,
 					onContextMenu: this.props.disabled ? _ => {} : this.props.onContextMenu,
-				}), "active", "disabled", "renderPopout", "icon", "type"));
+				}), "active", "disabled", "renderPopout", "icon", "type", "player"));
 				return !this.props.disabled && typeof this.props.renderPopout == "function" ? BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.PopoutContainer, {
 					children: button,
 					animation: BDFDB.LibraryComponents.PopoutContainer.Animation.SCALE,
@@ -467,7 +467,7 @@ module.exports = (_ => {
 						font-style: normal
 					}
 					:root {
-						--SC-spotify-green: ${BDFDB.DiscordConstants.Colors.SPOTIFY};
+						--SC-spotify-green: ${BDFDB.DiscordConstants.Colors.SPOTIFY || "#1db954"};
 					}
 					${BDFDB.dotCN.channelpanels} {
 						display: flex;
@@ -729,7 +729,7 @@ module.exports = (_ => {
 							collapseStates: collapseStates,
 							children: [BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.FormComponents.FormTitle, {
 								className: BDFDB.disCN.marginbottom4,
-								tag: BDFDB.LibraryComponents.FormComponents.FormTitle.Tags.H3,
+								tag: BDFDB.LibraryComponents.FormComponents.FormTags.H3,
 								children: "Add Control Buttons in small and/or big Player Version: "
 							})].concat(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsList, {
 								settings: Object.keys(this.defaults.buttons[Object.keys(this.defaults.buttons)[0]].value),

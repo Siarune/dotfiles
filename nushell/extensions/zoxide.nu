@@ -6,12 +6,15 @@
 #
 
 # Initialize hook to add new entries to the database.
-let-env config = ($env | default {} config).config
-let-env config = ($env.config | default {} hooks)
-let-env config = ($env.config | update hooks ($env.config.hooks | default [] pre_prompt))
-let-env config = ($env.config | update hooks.pre_prompt ($env.config.hooks.pre_prompt | append {
-  zoxide add -- $env.PWD
-}))
+if (not ($env | default false __zoxide_hooked | get __zoxide_hooked)) {
+  let-env __zoxide_hooked = true
+  let-env config = ($env | default {} config).config
+  let-env config = ($env.config | default {} hooks)
+  let-env config = ($env.config | update hooks ($env.config.hooks | default [] pre_prompt))
+  let-env config = ($env.config | update hooks.pre_prompt ($env.config.hooks.pre_prompt | append {
+    zoxide add -- $env.PWD
+  }))
+}
 
 # =============================================================================
 #
@@ -47,11 +50,11 @@ alias zi = __zoxide_zi
 #
 # Add this to your env file (find it by running `$nu.env-path` in Nushell):
 #
-#   zoxide init nushell --hook prompt | save ~/.zoxide.nu
+#   zoxide init nushell | save -f ~/.zoxide.nu
 #
 # Now, add this to the end of your config file (find it by running
 # `$nu.config-path` in Nushell):
 #
 #   source ~/.zoxide.nu
 #
-# Note: zoxide only supports Nushell v0.63.0 and above.
+# Note: zoxide only supports Nushell v0.73.0 and above.

@@ -98,9 +98,6 @@ module carapace {
   export extern "calibre" [
     ...args: string@"nu-complete carapace"
   ]
-  export extern "carapace" [
-    ...args: string@"nu-complete carapace"
-  ]
   export extern "cargo" [
     ...args: string@"nu-complete carapace"
   ]

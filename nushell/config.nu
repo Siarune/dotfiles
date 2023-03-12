@@ -196,6 +196,9 @@ let pastel = {
 #     carapace $spans.0 nushell $spans | from json
 # }
 
+let carapace_completer = {|spans|
+carapace $spans.0 nushell $spans | from json
+}
 
 # The default config record. This is where much of your global configuration is setup.
 let-env config = {
@@ -289,7 +292,7 @@ let-env config = {
     external: {
       enable: true # set to false to prevent nushell looking into $env.PATH to find more suggestions, `false` recommended for WSL users as this look up my be very slow
       max_results: 100 # setting it lower can improve completion performance at the cost of omitting some options
-      completer: null # check 'carapace_completer' above as an example
+      completer: $carapace_completer # check 'carapace_completer' above as an example
     }
   }
   filesize: {
@@ -552,21 +555,20 @@ let-env config = {
 }
 
 #Prompt styling
-oh-my-posh init nu
-source ~/.config/themes/oh-my-posh.nu
+source ~/.config/nushell/extensions/oh-my-posh.nu
 
 #Completions
 source ~/.config/nushell/completions/blitz.nu
-#source ~/.config/nushell/completions/bun.nu
 source ~/.config/nushell/completions/git.nu
-# source ~/.config/nushell/completions/yarn.nu
 
 #Tools
 source ~/.config/nushell/extensions/zoxide.nu
 source ~/.config/nushell/extensions/carapace.nu
-source ~/.config/nushell/nupac/nu-pkgs.nu
+# source ~/.config/nushell/nupac/nu-pkgs.nu
+source ~/.config/nushell/extensions/extract.nu
 
 #Aliases
 source ~/.config/nushell/aliases.nu
 
+#System info table
 [[(sys).host.sessions.name.2] [(sys).host.hostname] [(sys).host.name] [(sys).host.kernel_version] [(sys).host.uptime]] | flatten | table

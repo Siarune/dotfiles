@@ -1,28 +1,10 @@
 # Nushell Environment Config File
 
-def create_left_prompt [] {
-    let path_segment = ($env.PWD)
-
-    $path_segment
-}
-
-def create_right_prompt [] {
-    let time_segment = ([
-        (date now | date format '%m/%d/%Y %r')
-    ] | str collect)
-
-    $time_segment
-}
-
-# Use nushell functions to define your right and left prompt
-let-env PROMPT_COMMAND = { create_left_prompt }
-let-env PROMPT_COMMAND_RIGHT = { create_right_prompt }
-
 # The prompt indicators are environmental variables that represent
 # the state of the prompt
-let-env PROMPT_INDICATOR = { "〉" }
-let-env PROMPT_INDICATOR_VI_INSERT = { "" }
-let-env PROMPT_INDICATOR_VI_NORMAL = { "〉" }
+let-env PROMPT_INDICATOR = { "" }
+let-env PROMPT_INDICATOR_VI_INSERT = { " " }
+let-env PROMPT_INDICATOR_VI_NORMAL = { ": " }
 let-env PROMPT_MULTILINE_INDICATOR = { "::: " }
 
 # Specifies how environment variables are:
@@ -54,16 +36,11 @@ let-env NU_PLUGIN_DIRS = [
     ($nu.config-path | path dirname | path join 'plugins')
 ]
 
-# To add entries to PATH (on Windows you might use Path), you can use the following pattern:
+# To add entries to PATH you can use the following pattern:
 # let-env PATH = ($env.PATH | split row (char esep) | prepend '/some/path')
-zoxide init nushell --hook prompt | save ~/.zoxide.nu -f
-
-# let-env PATH = ($env.PATH | append '~/.yarn/bin')
-
-
-#fnm config
-let-env PATH = ($env.PATH | append '~/.fnm')
-load-env (fnm env --shell bash | lines | str replace 'export ' '' | str replace -a '"' '' | split column = | rename name value | where name != "FNM_ARCH" and name != "PATH" | reduce -f {} {|it, acc| $acc | upsert $it.name $it.value })
-let-env PATH = ($env.PATH | prepend $"($env.FNM_MULTISHELL_PATH)/bin")
-
+let-env PATH = ($env.PATH | append '~/.local/bin')
+let-env PATH = ($env.PATH | append "~/.config/carapace/bin")
 # let-env $XDG_CONFIG_HOME = "$HOME/.config
+
+oh-my-posh init nu --print --config '~/.config/themes/sia.omp.json' | save -f ~/.config/nushell/extensions/oh-my-posh.nu
+zoxide init nushell --hook prompt | save ~/.config/nushell/extensions/zoxide.nu -f

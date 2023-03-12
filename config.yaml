@@ -46,6 +46,10 @@ dotfiles:
     src: firefox/chrome
     dst: ~/.mozilla/firefox/vtvz40gz.default-release/chrome
     link: absolute
+  profile:
+    src: profile
+    dst: ~/.profile
+    link: absolute
 profiles:
   Quetz:
     dotfiles:
@@ -59,6 +63,7 @@ profiles:
     - zshrc
     - themes
     - firefox
+    - profile
   garrr:
     dotfiles:
     - nushell
